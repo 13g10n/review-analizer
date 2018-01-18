@@ -2,9 +2,12 @@ import logging
 
 from data import *
 from .reports.keyword import KeywordReport
+from .reports.sentence import SentenceReport
+from .reports.text import TextReport
 
 
 logging.basicConfig(filename='analizer.log',level=logging.DEBUG, filemode='w')
+
 
 class Analizer:
     @staticmethod
@@ -13,31 +16,32 @@ class Analizer:
         logging.debug("Starting text processing...")
         normalized_text = Analizer.__normalize_text(text)
         sentences = Analizer.__get_sentences(normalized_text)
-        positive, negative = 0, 0
+        result = TextReport(text=text)
         for index, sentence in enumerate(sentences):
-            result = Analizer.process_sentence(sentence)
-            for item in result:
-                positive += item.positive
-                negative += item.negative
-                print("Sentence #{0}\n{1}".format(index+1, item))
-        print("\n\nTotal: \t+{0} / -{1}".format(positive, negative))
+            report = Analizer.process_sentence(sentence, index)
+            if report:
+                result.add(report)
+        return result
 
     @staticmethod
-    def process_sentence(sentence):
+    def process_sentence(sentence, index=None):
         """ Process sentence. """
         logging.debug("Starting sentence processing for '{0}'".format(sentence))
-        results = []
+        result = SentenceReport(sentence=sentence, index=index)
         words = Analizer.__get_words(sentence)
+        success = False
         for aspect_category in ASPECT_CATEGORIES:
             for keyword in ASPECT_CATEGORIES[aspect_category]:
                 if keyword in sentence:
                     logging.debug("Found keyword '{0}' in '{1}'".format(keyword, sentence))
                     report = Analizer.__process_context(words, keyword.split()[0])
                     if report:
+                        success = True
                         logging.debug("Report created for '{0}'".format(sentence))
                         report.category = aspect_category
-                        results.append(report)
-        return results
+                        result.add(report)
+        result = result if success else None
+        return result
 
     @staticmethod
     def __normalize_text(text):
@@ -45,7 +49,8 @@ class Analizer:
         text = text.lower()
         text = text.replace(",", " ")
         text = text.replace(":", " ")
-        text = text.replace("-", " ")
+        text = text.replace(" -", " ")
+        text = text.replace("- ", " ")
         while "  " in text:
             text = text.replace("  ", " ")
         return text
@@ -53,7 +58,11 @@ class Analizer:
     @staticmethod
     def __get_sentences(text):
         """ Returns list of sentences from given text. """
-        return text.split(".")
+        result = []
+        for index, sentence in enumerate(text.split(".")):
+            if sentence:
+                result.append(sentence.strip())
+        return result
 
     @staticmethod
     def __get_words(sentence):
@@ -70,7 +79,7 @@ class Analizer:
     @staticmethod
     def __process_context(sentence, word, index=None):
         logging.debug("Starting context processing for <{0}>".format(sentence))
-        index = sentence.index(word) if not index else index
+        index = Analizer.__get_word_form_index(sentence, word) if not index else index
         context = Analizer.__get_context(sentence, index)
         evaluation, evaluation_rate = Analizer.__get_evaluation(context)
         if evaluation:
@@ -85,10 +94,19 @@ class Analizer:
             return KeywordReport(
                 keyword=word,
                 positive=positive,
-                negative=negative
+                negative=negative,
+                inverted=success,
+                intensifier=intensifier
             )
         else:
             return None
+
+    @staticmethod
+    def __get_word_form_index(sentence, word):
+        for index, item in enumerate(sentence):
+            if word in item:
+                return index
+        return None
 
     @staticmethod
     def __get_context(sentence, index):
@@ -119,6 +137,6 @@ class Analizer:
 
     @staticmethod
     def __get_keyword_summary(rate=0, multiplayer=1, inverted=False):
-        multiplayer = 1 if not multiplayer else 1
-        rate = (rate * multiplayer * -1) if inverted else (rate * multiplayer)
-        return (rate, 0) if rate > 0 else (0, rate)
+        multiplayer = 1 if not multiplayer else multiplayer
+        result = (rate * multiplayer * -1) if inverted else (rate * multiplayer)
+        return (result, 0) if result > 0 else (0, result)
