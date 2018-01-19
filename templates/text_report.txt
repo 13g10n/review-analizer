@@ -1,0 +1,11 @@
+ANALIZE REPORT for "{TITLE}"
+
+    {TEXT}
+
+    Total sentences:  {SENTENCES_COUNT}
+    Evaluation:       {POSITIVE} | {NEGATIVE}
+    Summary:          {SUMMARY}
+
+SENTENCES DETAILS:
+
+{SENTENCE_REPORTS}

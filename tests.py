@@ -3,6 +3,7 @@ import unittest
 from model.analizer import Analizer
 from model.text_processor import TextProcessor
 from model.reports.context import ContextReport
+from model.template_loader import TemplateLoader
 
 
 class AnalizerTest(unittest.TestCase):
@@ -121,3 +122,12 @@ class TextProcessorTest(unittest.TestCase):
     def test_get_words(self):
         result = TextProcessor.get_words(self.sentence)
         self.assertListEqual(result, self.words)
+
+
+class TemplateLoaderTest(unittest.TestCase):
+
+    def setUp(self):
+        template_dir = ""
+
+    def test_load(self):
+        TemplateLoader.load('text_report.txt')

@@ -1,5 +1,9 @@
 from model.reports.text import TextReport
-from .templates import KEYWORD_REPORT, SENTENCE_REPORT, TEXT_REPORT
+from model.template_loader import TemplateLoader
+
+TEXT_REPORT = TemplateLoader.load('text_report.txt')
+SENTENCE_REPORT = TemplateLoader.load('sentence_report.txt')
+CONTEXT_REPORT = TemplateLoader.load('context_report.txt')
 
 
 class TerminalPrinter:
@@ -38,7 +42,7 @@ class TerminalPrinter:
 
     @staticmethod
     def __get_keyword_report_string(report):
-        return KEYWORD_REPORT.format(
+        return CONTEXT_REPORT.format(
             CATEGORY=report.category,
             KEYWORD=report.content,
             POSITIVE=report.positive,

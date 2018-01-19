@@ -1,0 +1,5 @@
+    [{INDEX}] {SENTENCE}
+
+    Total keywords:    {KEYWORDS_COUNT}
+
+{KEYWORD_REPORT}
