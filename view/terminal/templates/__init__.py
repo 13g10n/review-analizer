@@ -1,5 +1,6 @@
-TEXT_REPORT = """
-TEXT REPORT for "{TITLE}"
+TEXT_REPORT = """TEXT REPORT for "{TITLE}"
+
+\t{TEXT}
 
 \tTotal sentences:  {SENTENCES_COUNT}
 \tEvaluation:       {POSITIVE} | {NEGATIVE}

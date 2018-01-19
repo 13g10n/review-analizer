@@ -1,7 +1,8 @@
 import unittest
 
 from model.analizer import Analizer
-from model.reports.keyword import KeywordReport
+from model.text_processor import TextProcessor
+from model.reports.context import ContextReport
 
 
 class AnalizerTest(unittest.TestCase):
@@ -11,17 +12,6 @@ class AnalizerTest(unittest.TestCase):
                           "impact the overall creative timeline.  They delivered a lot of work that’s " \
                           "probably worth more than the scope. It was very whimsical and " \
                           "brand-appropriate and worked very well."
-
-        self.normilized_text = "they underestimated the time some technical aspects took but this didn't " \
-                               "impact the overall creative timeline. they delivered a lot of work that’s " \
-                               "probably worth more than the scope. it was very whimsical and " \
-                               "brand-appropriate and worked very well."
-
-        self.sentences = [
-            "They underestimated the time some technical aspects took, but this didn't impact the overall creative timeline",
-            "They delivered a lot of work that’s probably worth more than the scope",
-            "It was very whimsical and brand-appropriate and worked very well"
-        ]
 
         self.sentence = "They underestimated the time some technical aspects took, " \
                         "but this didn't impact the overall creative timeline"
@@ -52,24 +42,12 @@ class AnalizerTest(unittest.TestCase):
         self.context_result = None
 
         self.sentence_result = [
-            KeywordReport(
+            ContextReport(
                 keyword="timeline",
                 positive=2,
                 negative=0
             )
         ]
-
-    def test_normilize_text(self):
-        result = Analizer._Analizer__normalize_text(self.input_text)
-        self.assertEqual(result, self.normilized_text)
-
-    def test_get_sentences(self):
-        result = Analizer._Analizer__get_sentences(self.input_text)
-        self.assertListEqual(result, self.sentences)
-
-    def test_get_words(self):
-        result = Analizer._Analizer__get_words(self.sentence)
-        self.assertListEqual(result, self.words)
 
     def test_get_context(self):
         result = Analizer._Analizer__get_context(self.words, self.sentence_context_index)
@@ -97,9 +75,49 @@ class AnalizerTest(unittest.TestCase):
         self.assertEqual(result, self.context_result)
 
     def test_process_sentence(self):
-        result = Analizer.process_sentence(self.sentence)
+        result = Analizer.process_sentence(self.sentence).reports
         self.assertEqual(len(result), len(self.sentence_result))
         for expected, real in zip(result, self.sentence_result):
-            self.assertEqual(expected.keyword, real.keyword)
+            self.assertEqual(expected.content, real.content)
             self.assertEqual(expected.positive, real.positive)
             self.assertEqual(expected.negative, real.negative)
+
+
+class TextProcessorTest(unittest.TestCase):
+
+    def setUp(self):
+        self.input_text = "They underestimated the time some technical aspects took, but this didn't " \
+                          "impact the overall creative timeline.  They delivered a lot of work that’s " \
+                          "probably worth more than the scope. It was very whimsical and " \
+                          "brand-appropriate and worked very well."
+
+        self.normalized_text = "they underestimated the time some technical aspects took but this didn't " \
+                               "impact the overall creative timeline. they delivered a lot of work that’s " \
+                               "probably worth more than the scope. it was very whimsical and " \
+                               "brand-appropriate and worked very well."
+
+        self.sentences = [
+            "They underestimated the time some technical aspects took, but this didn't impact the overall creative timeline.",
+            "They delivered a lot of work that’s probably worth more than the scope.",
+            "It was very whimsical and brand-appropriate and worked very well."
+        ]
+
+        self.sentence = "They underestimated the time some technical aspects took, " \
+                        "but this didn't impact the overall creative timeline"
+
+        self.words = [
+            "They", "underestimated", "the", "time", "some", "technical", "aspects", "took,",
+            "but", "this", "didn't", "impact", "the", "overall", "creative", "timeline"
+        ]
+
+    def test_normalize(self):
+        result = TextProcessor.normalize(self.input_text)
+        self.assertEqual(result, self.normalized_text)
+
+    def test_get_sentences(self):
+        result = TextProcessor.get_sentences(self.input_text)
+        self.assertListEqual(result, self.sentences)
+
+    def test_get_words(self):
+        result = TextProcessor.get_words(self.sentence)
+        self.assertListEqual(result, self.words)
