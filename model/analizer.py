@@ -1,11 +1,10 @@
 import logging
 
 from data import *
-
+from model.processors.text import TextProcessor
 from .reports.context import ContextReport
 from .reports.sentence import SentenceReport
 from .reports.text import TextReport
-from .text_processor import TextProcessor
 
 logging.basicConfig(filename='analizer.log',level=logging.DEBUG, filemode='w')
 

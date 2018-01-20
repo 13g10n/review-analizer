@@ -1,9 +1,9 @@
 import unittest
 
 from model.analizer import Analizer
-from model.text_processor import TextProcessor
+from model.loaders.template_loader import TemplateLoader
+from model.processors.text import TextProcessor
 from model.reports.context import ContextReport
-from model.template_loader import TemplateLoader
 
 
 class AnalizerTest(unittest.TestCase):

@@ -1,5 +1,6 @@
+from model.loaders.template_loader import TemplateLoader
+from model.processors.template import TemplateProcessor
 from model.reports.text import TextReport
-from model.template_loader import TemplateLoader
 
 TEXT_REPORT = TemplateLoader.load('text_report.txt')
 SENTENCE_REPORT = TemplateLoader.load('sentence_report.txt')
@@ -17,36 +18,4 @@ class TerminalPrinter:
 
     @staticmethod
     def __print_text_report(report):
-        print(TerminalPrinter.__get_text_report_string(report))
-
-    @staticmethod
-    def __get_text_report_string(report):
-        return TEXT_REPORT.format(
-            TITLE=report.excerpt,
-            TEXT=report.content,
-            SENTENCES_COUNT=report.sentences_count,
-            POSITIVE=report.positive,
-            NEGATIVE=report.negative,
-            SUMMARY=report.summary,
-            SENTENCE_REPORTS="".join([TerminalPrinter.__get_sentence_report_string(report) for report in report.reports])
-        )
-
-    @staticmethod
-    def __get_sentence_report_string(report):
-        return SENTENCE_REPORT.format(
-            INDEX=report.index + 1,
-            SENTENCE=report.sentence,
-            KEYWORDS_COUNT=report.keywords_count,
-            KEYWORD_REPORT="".join([TerminalPrinter.__get_keyword_report_string(report) for report in report.reports])
-        )
-
-    @staticmethod
-    def __get_keyword_report_string(report):
-        return CONTEXT_REPORT.format(
-            CATEGORY=report.category,
-            KEYWORD=report.content,
-            POSITIVE=report.positive,
-            NEGATIVE=report.negative,
-            INVERTED=('Yes' if report.inverted else 'No'),
-            INTENSIFIER=(report.intensifier if report.intensifier else '-'),
-        )
+        print(TemplateProcessor.get_text_report_string(report))
