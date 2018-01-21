@@ -2,6 +2,7 @@ import settings
 
 from tkinter import *
 from model.loaders.color_scheme_loader import ColorSchemeLoader
+from view.gui.widgets.text_input import ScrollableTextInput
 
 SCHEME = ColorSchemeLoader.load(settings.DEFAULT_COLOR_SCHEME)
 
@@ -17,25 +18,25 @@ class OutputFrame(Frame):
         self.pack_propagate(0)
 
     def _activate_callback(self):
-        self.output_field.config(state=NORMAL)
-        self.output_field.delete(0.0, END)
-        self.output_field.insert(0.0, self.__controller.output_text)
-        self.output_field.config(state=DISABLED)
+        self.output_field.set_text(self.__controller.output_text)
 
     def __create(self):
-        self.title_label = Label(self, text='Step 2: output'.upper(),
+        self.title_label = Label(self, text='OUTPUT STEP'.upper(),
                                  background=SCHEME.background,
                                  fg=SCHEME.text, font=SCHEME.title_font)
-        self.title_label.pack(fill=X)
+        self.title_label.pack(fill=X, pady=(20, 0))
 
-        self.output_field = Text(self, height=18, bd=0,
-                                 background=SCHEME.background,
-                                 foreground=SCHEME.text,
-                                 font=SCHEME.description_font)
+        self.description_label = Label(self, text='You can view or export the result of text processing',
+                                       background=SCHEME.background,
+                                       fg=SCHEME.text, font=SCHEME.description_font)
+        self.description_label.pack(fill=X, pady=(0, 10))
+
+        self.output_field = ScrollableTextInput(self)
         self.output_field.pack(fill=X, padx=self.__padding)
 
         self.continue_button = Button(self, text='Back', relief='flat', bd=0,
                                       background=SCHEME.button_background,
+                                      font=SCHEME.button_font,
                                       foreground=SCHEME.button_text,
                                       activebackground=SCHEME.button_active,
                                       activeforeground=SCHEME.button_text,
@@ -44,4 +45,4 @@ class OutputFrame(Frame):
         self.continue_button.pack(fill=X, padx=self.__padding, pady=15)
 
     def __back_callback(self):
-        self.__controller.prev_step()
+        self.__controller.restart_steps()

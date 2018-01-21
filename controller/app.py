@@ -6,7 +6,8 @@ from model.processors.template import TemplateProcessor
 class Application:
     __steps = {
         1: 'input',
-        2: 'output'
+        2: 'processing',
+        3: 'output',
     }
 
     def __init__(self):
@@ -43,6 +44,10 @@ class Application:
     def prev_step(self):
         self.__current_step -= 1
         self.window.set_frame(self.__steps[self.__current_step])
+
+    def restart_steps(self):
+        self.__current_step = 1
+        self.window.set_frame(self.__steps[1])
 
     def process_text(self):
         self.__output_text = TemplateProcessor.get_text_report_string(

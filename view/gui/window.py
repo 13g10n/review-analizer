@@ -20,8 +20,8 @@ class MainWindow(Tk):
 
     def set_frame(self, frame_name):
         frame = self.__frames[frame_name]
-        frame._activate_callback()
         frame.tkraise()
+        frame._activate_callback()
 
     def __setup_window(self):
         self.resizable(False, False)
