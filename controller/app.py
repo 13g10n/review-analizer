@@ -13,6 +13,7 @@ class Application:
     def __init__(self):
         self.__input_text = ''
         self.__output_text = ''
+        self.__report = None
 
         self.__current_step = 1
         self.window = MainWindow(controller=self)
@@ -37,6 +38,10 @@ class Application:
     def output_text(self):
         return self.__output_text
 
+    @property
+    def report(self):
+        return self.__report
+
     def next_step(self):
         self.__current_step += 1
         self.window.set_frame(self.__steps[self.__current_step])
@@ -50,5 +55,5 @@ class Application:
         self.window.set_frame(self.__steps[1])
 
     def process_text(self):
-        self.__output_text = TemplateProcessor.get_text_report_string(
-            Analizer.process_text(self.__input_text))
+        self.__report = Analizer.process_text(self.__input_text)
+        self.__output_text = TemplateProcessor.get_text_report_string(self.__report)

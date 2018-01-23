@@ -2,6 +2,7 @@ import settings
 
 from tkinter import *
 from model.loaders.color_scheme_loader import ColorSchemeLoader
+from model.processors.word import WordProcessor
 from view.gui.widgets.text_input import ScrollableTextInput
 
 SCHEME = ColorSchemeLoader.load(settings.DEFAULT_COLOR_SCHEME)
@@ -34,7 +35,17 @@ class OutputFrame(Frame):
         self.output_field = ScrollableTextInput(self)
         self.output_field.pack(fill=X, padx=self.__padding)
 
-        self.continue_button = Button(self, text='Back', relief='flat', bd=0,
+        self.back_button = Button(self, text='Export to .docx', relief='flat', bd=0,
+                                      background=SCHEME.button_background,
+                                      font=SCHEME.button_font,
+                                      foreground=SCHEME.button_text,
+                                      activebackground=SCHEME.button_active,
+                                      activeforeground=SCHEME.button_text,
+                                      command=self.__docx_callback
+                                      )
+        self.back_button.pack(fill=X, padx=self.__padding, pady=(15, 0))
+
+        self.back_button = Button(self, text='Back', relief='flat', bd=0,
                                       background=SCHEME.button_background,
                                       font=SCHEME.button_font,
                                       foreground=SCHEME.button_text,
@@ -42,7 +53,10 @@ class OutputFrame(Frame):
                                       activeforeground=SCHEME.button_text,
                                       command=self.__back_callback
                                       )
-        self.continue_button.pack(fill=X, padx=self.__padding, pady=15)
+        self.back_button.pack(fill=X, padx=self.__padding, pady=15)
 
     def __back_callback(self):
         self.__controller.restart_steps()
+
+    def __docx_callback(self):
+        WordProcessor.generate(self.__controller.report)

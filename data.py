@@ -6,6 +6,7 @@ EVALUATION_VOCABULARY = {
     'accessible': 1,
     'annoyed': -2,
     'accommodating': 1,
+    'a lot of': -1,
     'annoying': -2,
     'accountable': 2,
     'anxious': -2,
@@ -114,6 +115,7 @@ EVALUATION_VOCABULARY = {
     'lacking':-1,
     'fiscally-responsible':1,
     'low-cost':-1,
+    'length': -1,
     'flexible':2,
     'maliciously':-3,
     'fresh':1,
@@ -270,7 +272,7 @@ INVERTER_VOCABULARY = (
 )
 
 ASPECT_CATEGORIES = {
-    'common': (
+    'type of advertising agency': (
         'advertising and marketing agency', 'branding agency', 'creative agency', 'digital marketing agency',
         'full service digital agency', 'social media marketing agency', 'public relations agency',
         'video production agency', 'naming agency',
@@ -285,6 +287,9 @@ ASPECT_CATEGORIES = {
         'e-mailing', 'phone call', 'meeting', 'management', 'coordination', 'contact', 'feedback',
     ),
     'scheduling': (
-        'on time', 'out of time', 'deadline', 'timeline',
+        'on time', 'out of time', 'deadline', 'timeline', 'time',
+    ),
+    'cost': (
+        'price', 'money', 'cost', 'value',
     ),
 }
