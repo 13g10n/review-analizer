@@ -1,6 +1,6 @@
 import os
 
-VERSION = '1.0'
+VERSION = '2.1'
 
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 
