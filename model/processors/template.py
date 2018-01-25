@@ -37,4 +37,5 @@ class TemplateProcessor:
             NEGATIVE=report.negative,
             INVERTED=('Yes' if report.inverted else 'No'),
             INTENSIFIER=(report.intensifier if report.intensifier else '-'),
+            EVALUATOR=(report.evaluator if report.evaluator else '-'),
         )

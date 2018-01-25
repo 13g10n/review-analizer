@@ -2,6 +2,7 @@ import settings
 
 from tkinter import *
 from model.loaders.color_scheme_loader import ColorSchemeLoader
+from model.processors.file import FileProcessor
 from model.processors.word import WordProcessor
 from view.gui.widgets.text_input import ScrollableTextInput
 
@@ -35,7 +36,12 @@ class OutputFrame(Frame):
         self.output_field = ScrollableTextInput(self)
         self.output_field.pack(fill=X, padx=self.__padding)
 
-        self.back_button = Button(self, text='Export to .docx', relief='flat', bd=0,
+        self.buttons_frame = Frame(self)
+        self.buttons_frame.columnconfigure(0, weight=2)
+        self.buttons_frame.columnconfigure(1, weight=3)
+        self.buttons_frame.pack(fill=X, padx=self.__padding, pady=(15, 0))
+
+        self.back_button = Button(self.buttons_frame, text='Export to .docx', relief='flat', bd=0,
                                       background=SCHEME.button_background,
                                       font=SCHEME.button_font,
                                       foreground=SCHEME.button_text,
@@ -43,9 +49,9 @@ class OutputFrame(Frame):
                                       activeforeground=SCHEME.button_text,
                                       command=self.__docx_callback
                                       )
-        self.back_button.pack(fill=X, padx=self.__padding, pady=(15, 0))
+        self.back_button.grid(row=0, column=0, sticky=W+E+S+N)
 
-        self.back_button = Button(self, text='Back', relief='flat', bd=0,
+        self.back_button = Button(self.buttons_frame, text='Back', relief='flat', bd=0,
                                       background=SCHEME.button_background,
                                       font=SCHEME.button_font,
                                       foreground=SCHEME.button_text,
@@ -53,10 +59,18 @@ class OutputFrame(Frame):
                                       activeforeground=SCHEME.button_text,
                                       command=self.__back_callback
                                       )
-        self.back_button.pack(fill=X, padx=self.__padding, pady=15)
+        self.back_button.grid(row=0, column=1, sticky=W+E+S+N, padx=(15, 0))
 
     def __back_callback(self):
         self.__controller.restart_steps()
 
     def __docx_callback(self):
-        WordProcessor.generate(self.__controller.report)
+        document = WordProcessor.generate(self.__controller.report)
+        filename = FileProcessor.get_file_name(
+            filetypes=(
+                ("Document files", "*.doc;*.docx"),
+                ("All files", "*.*")
+            )
+        )
+        if filename:
+            FileProcessor.save(document, filename)

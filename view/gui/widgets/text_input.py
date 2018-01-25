@@ -13,11 +13,12 @@ class ScrollableTextInput(Frame):
         self.output_field_scrollbar = Scrollbar(self, bg=SCHEME.background_light, relief='flat')
         self.output_field_scrollbar.pack(side=RIGHT, fill=Y)
 
-        self.output_field = Text(self, height=10, wrap=WORD, bd=5,
+        self.output_field = Text(self, height=13, wrap=WORD, bd=5,
                                  relief='flat',
                                  background=SCHEME.background_light,
                                  foreground=SCHEME.text,
                                  font=SCHEME.font,
+                                 insertbackground=SCHEME.text,
                                  yscrollcommand=self.output_field_scrollbar.set)
         self.output_field.pack(fill=Y)
         self.output_field_scrollbar.config(command=self.output_field.yview)

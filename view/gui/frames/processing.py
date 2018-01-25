@@ -23,8 +23,8 @@ class ProcessingFrame(Frame):
         self.__text_apdater = True
         self.__update_text()
         self.__controller.process_text()
-        self.after(1600, self.__controller.next_step)
-        self.after(1600, self.__stop_text_updater)
+        self.after(600, self.__controller.next_step)
+        self.after(600, self.__stop_text_updater)
 
     def __create(self):
         self.title_label = Label(self, text=self.__text.upper(),

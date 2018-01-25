@@ -48,8 +48,8 @@ class Analizer:
         logging.debug("Starting context processing for <{0}>".format(sentence))
         index = TextProcessor.get_word_index(sentence, word) if not index else index
         context = Analizer.__get_context(sentence, index)
-        evaluation, evaluation_rate = Analizer.__get_evaluation(context)
-        if evaluation:
+        evaluator, evaluation_rate = Analizer.__get_evaluation(context)
+        if evaluator:
             logging.debug("Evaluation word found: '{0}'".format(sentence))
             intensifier, intensifier_rate = Analizer.__get_intensifier(context)
             inverter_word, success = Analizer.__get_inverter(context)
@@ -60,6 +60,7 @@ class Analizer:
             )
             return ContextReport(
                 keyword=word,
+                evaluator=evaluator,
                 positive=positive,
                 negative=negative,
                 inverted=success,

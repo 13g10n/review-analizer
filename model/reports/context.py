@@ -2,7 +2,7 @@ from .report import Report
 
 
 class ContextReport(Report):
-    def __init__(self, keyword=None, positive=0, negative=0, intensifier=None, inverted=False):
+    def __init__(self, keyword=None, positive=0, negative=0, intensifier=None, inverted=False, evaluator=None):
         super().__init__(
             content=keyword,
         )
@@ -10,3 +10,4 @@ class ContextReport(Report):
         self.category = None
         self.inverted = inverted
         self.intensifier = intensifier
+        self.evaluator = evaluator

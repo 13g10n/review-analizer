@@ -35,6 +35,8 @@ class InputFrame(Frame):
         self.input_field = Text(self, height=13, bd=5,
                                 relief='flat', wrap=WORD,
                                 background=SCHEME.background_light,
+                                foreground=SCHEME.text,
+                                insertbackground=SCHEME.text,
                                 font=SCHEME.font)
         self.input_field.pack(fill=X, padx=self.__padding)
 

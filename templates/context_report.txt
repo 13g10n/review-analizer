@@ -1,5 +1,6 @@
         Category:        {CATEGORY}
         Keyword:         {KEYWORD}
+        Evaluator:       {EVALUATOR}
         Intensifier:     {INTENSIFIER}
         Inverted:        {INVERTED}
         Evaluation:      {POSITIVE} | {NEGATIVE}
