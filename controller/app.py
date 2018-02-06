@@ -1,6 +1,6 @@
-from view.gui.window import MainWindow
-from model.analizer import Analizer
-from model.processors.template import TemplateProcessor
+from view.window import MainWindow
+from models.analizer import Analizer
+from models.processors.template import TemplateProcessor
 
 
 class Application:
@@ -8,6 +8,7 @@ class Application:
         1: 'input',
         2: 'processing',
         3: 'output',
+        4: 'summary',
     }
 
     def __init__(self):

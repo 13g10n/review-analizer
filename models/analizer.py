@@ -1,7 +1,7 @@
 import logging
 
 from data import *
-from model.processors.text import TextProcessor
+from models.processors.text import TextProcessor
 from .reports.context import ContextReport
 from .reports.sentence import SentenceReport
 from .reports.text import TextReport

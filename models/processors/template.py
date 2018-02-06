@@ -1,4 +1,4 @@
-from model.loaders.template_loader import TemplateLoader
+from models.loaders.template_loader import TemplateLoader
 
 TEXT_REPORT = TemplateLoader.load('text_report.txt')
 SENTENCE_REPORT = TemplateLoader.load('sentence_report.txt')
