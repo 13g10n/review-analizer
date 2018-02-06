@@ -1,11 +1,27 @@
 from models.loaders.template_loader import TemplateLoader
+from models.processors.evaluation import EvaluationProcessor
 
+SUMMARY_REPORT = TemplateLoader.load('summary_report.txt')
 TEXT_REPORT = TemplateLoader.load('text_report.txt')
 SENTENCE_REPORT = TemplateLoader.load('sentence_report.txt')
 CONTEXT_REPORT = TemplateLoader.load('context_report.txt')
+CATEGORY_LINE = TemplateLoader.load('category_line.txt')
 
 
 class TemplateProcessor:
+
+    @staticmethod
+    def get_summary_report_string(report):
+        return SUMMARY_REPORT.format(
+            POSITIVE=report.positive,
+            NEGATIVE=report.negative,
+            SUMMARY=report.summary,
+            COUNTER=len(report.reports),
+            TABLE="".join([CATEGORY_LINE.format(
+                CATEGORY=category,
+                VALUE=EvaluationProcessor.get_evaluation(value)
+            ) for (category, value) in report.evaluation.items()])
+        )
 
     @staticmethod
     def get_text_report_string(report):

@@ -26,11 +26,7 @@ class OutputFrame(Frame):
         self.description = Label(self, text='You can view or export the result of text processing',
                                        background=SCHEME.background,
                                        fg=SCHEME.text, font=SCHEME.description_font)
-        self.output = Text(self, relief='flat', wrap=WORD,
-                          background=SCHEME.background_light,
-                          foreground=SCHEME.text,
-                          insertbackground=SCHEME.text,
-                          font=SCHEME.font)
+        self.output = Text(self, wrap=WORD)
         self.back = Button(self, text='Add another',
                                       command=self.__back_callback)
         self.next = Button(self, text='Summary',

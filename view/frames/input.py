@@ -15,7 +15,6 @@ class InputFrame(Frame):
 
     def _activate_callback(self):
         self.input.delete(1.0, END)
-        self.input.insert(0.0, self.__controller.input_text)
 
     def __create(self):
         self.title = Label(self, text='INPUT STEP', font=SCHEME.title_font)

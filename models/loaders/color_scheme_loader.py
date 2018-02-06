@@ -12,6 +12,7 @@ class ColorSchemeLoader:
     @staticmethod
     def apply(root, scheme=settings.DEFAULT_COLOR_SCHEME):
         root.option_add("*Background", scheme.background)
+        root.option_add("*Font", scheme.font)
 
         root.option_add("*Button.Background", scheme.button_background)
         root.option_add("*Button.Foreground", scheme.button_text)
@@ -26,6 +27,7 @@ class ColorSchemeLoader:
         root.option_add("*Text.Relief", scheme.text_relief)
         root.option_add("*Text.Foreground", scheme.text_foreground)
         root.option_add("*Text.Background", scheme.text_background)
+        root.option_add("*Text.Font", scheme.font)
         root.option_add("*Text.insertBackground", scheme.text_insertbackground)
 
         root.option_add("*Label.Foreground", scheme.label_foreground)

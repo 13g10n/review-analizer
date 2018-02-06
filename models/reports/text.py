@@ -18,13 +18,3 @@ class TextReport(Report):
     @property
     def sentences_count(self):
         return self.__sentences_count
-
-    @property
-    def summary(self):
-        summary = self.positive + self.negative
-        if summary > 0:
-            return "Positive"
-        elif summary < 0:
-            return "Negative"
-        else:
-            return "Neutral"
