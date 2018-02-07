@@ -1,3 +1,6 @@
+from models.processors.evaluation import EvaluationProcessor
+
+
 class Report:
     """Abstract report class, all type of reports must inherit
     from this one.
@@ -25,6 +28,10 @@ class Report:
     @property
     def reports(self):
         return self.__reports
+
+    @property
+    def summary(self):
+        return EvaluationProcessor.get_evaluation(self.positive + self.negative)
 
     def add(self, item):
         if item and isinstance(item, self.__acceptable_types):

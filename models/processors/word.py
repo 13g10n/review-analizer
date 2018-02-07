@@ -6,29 +6,31 @@ from docx import Document
 class WordProcessor:
 
     @staticmethod
-    def generate(report):
+    def generate(summary):
         document = Document()
-        document.add_heading('Text report for "{}"'.format(report.excerpt), 1)
 
-        document.add_heading('Input', 2)
-        document.add_paragraph('{}'.format(report.content))
+        for report in summary.reports:
+            document.add_heading('Text report for "{}"'.format(report.excerpt), 1)
 
-        document.add_heading('Summary', 2)
-        summary_table = document.add_table(rows=2, cols=3)
-        summary_table.style = 'Table Grid'
-        WordProcessor.__add_summary_table_rows(summary_table, report)
+            document.add_heading('Input', 2)
+            document.add_paragraph('{}'.format(report.content))
 
-        document.add_heading('Details', 2)
-        details_table = document.add_table(rows=0, cols=7)
-        details_table.style = 'Table Grid'
-        WordProcessor.__add_sentences_reports_heading_row(details_table)
-        for sentence_report in report.reports:
-            first_row = WordProcessor.__add_sentence_report_row(details_table, sentence_report)
-            WordProcessor.__add_keyword_reports_heading_row(details_table)
-            last_row = first_row
-            for keyword_report in sentence_report.reports:
-                last_row = WordProcessor.__add_keyword_report_row(details_table, keyword_report)
-            first_row.cells[0].merge(last_row.cells[0])
+            document.add_heading('Summary', 2)
+            summary_table = document.add_table(rows=2, cols=3)
+            summary_table.style = 'Table Grid'
+            WordProcessor.__add_summary_table_rows(summary_table, report)
+
+            document.add_heading('Details', 2)
+            details_table = document.add_table(rows=0, cols=7)
+            details_table.style = 'Table Grid'
+            WordProcessor.__add_sentences_reports_heading_row(details_table)
+            for sentence_report in report.reports:
+                first_row = WordProcessor.__add_sentence_report_row(details_table, sentence_report)
+                WordProcessor.__add_keyword_reports_heading_row(details_table)
+                last_row = first_row
+                for keyword_report in sentence_report.reports:
+                    last_row = WordProcessor.__add_keyword_report_row(details_table, keyword_report)
+                first_row.cells[0].merge(last_row.cells[0])
 
         return document
 
