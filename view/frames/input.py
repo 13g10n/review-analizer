@@ -21,14 +21,19 @@ class InputFrame(Frame):
         self.description = Label(self, text='Enter the text which you want to analyze in the '
                                  'box below and click "Continue" button', font=SCHEME.description_font)
         self.input = Text(self, wrap=WORD)
+        self.clear = Button(self, text="Clear", command=self.__clear_input)
         self.next = Button(self, text='Continue', command=self.__continue_callback)
 
     def __place(self):
-        self.title.grid(row=0, column=0)
-        self.description.grid(row=1, column=0)
-        self.input.grid(row=2, column=0, sticky=W+E+S+N, pady=10)
+        self.title.grid(row=0, column=0, columnspan=2)
+        self.description.grid(row=1, column=0, columnspan=2)
+        self.input.grid(row=2, column=0, sticky=W+E+S+N, pady=10, columnspan=2)
         self.grid_rowconfigure(2, weight=1)
-        self.next.grid(row=3, column=0, sticky=W+E+S+N)
+        self.clear.grid(row=3, column=0, sticky=W+E+S+N, padx=(0, 5))
+        self.next.grid(row=3, column=1, sticky=W+E+S+N, padx=(5, 0))
+
+    def __clear_input(self):
+        self.input.delete(0.0, END)
 
     def __continue_callback(self):
         self.__controller.input_text = self.input.get(1.0, END)[:-1]

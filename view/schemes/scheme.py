@@ -11,3 +11,6 @@ class ColorScheme:
 
     label_foreground = '#34495e'
     label_background = '#ecf0f1'
+
+    success_color = "#2ecc71"
+    danger_color = "#e74c3c"
