@@ -28,51 +28,67 @@ class Analizer:
         """ Process sentence. """
         logging.debug("Starting sentence processing for '{0}'".format(sentence))
         output = SentenceReport(sentence=sentence, index=index)
-        words = TextProcessor.get_words(TextProcessor.normalize(sentence))
+        words = TextProcessor.get_words(Analizer.__normalize_keywords(TextProcessor.normalize(sentence)))
         success = False
         for aspect_category in ASPECT_CATEGORIES:
             for keyword in ASPECT_CATEGORIES[aspect_category]:
-                if keyword in sentence:
+                if keyword.replace(' ', '_') in words:
                     logging.debug("Found keyword '{0}' in '{1}'".format(keyword, sentence))
-                    report = Analizer.__process_context(words, keyword)
-                    if report:
+                    reports = Analizer.__process_context(words, keyword.replace(' ', '_'))
+                    if reports:
                         success = True
                         logging.debug("Report created for '{0}'".format(sentence))
-                        report.category = aspect_category
-                        output.add(report)
+                        for report in reports:
+                            report.category = aspect_category
+                            output.add(report)
         output = output if success else None
         return output
 
     @staticmethod
-    def __process_context(sentence, word, index=None):
-        logging.debug("Starting context processing for <{0}>".format(sentence))
-        index = TextProcessor.get_word_index(sentence, word.split()[0]) if not index else index
-        context = Analizer.__get_context(sentence, index)
-        evaluator, evaluation_rate = Analizer.__get_evaluation(context)
-        if evaluator:
-            logging.debug("Evaluation word found: '{0}'".format(sentence))
-            intensifier, intensifier_rate = Analizer.__get_intensifier(context)
-            inverter_word, success = Analizer.__get_inverter(context)
-            positive, negative = Analizer.__get_keyword_summary(
-                rate=evaluation_rate,
-                multiplayer=intensifier_rate,
-                inverted=success
-            )
-            return ContextReport(
-                keyword=word,
-                evaluator=evaluator,
-                positive=positive,
-                negative=negative,
-                inverted=success,
-                intensifier=intensifier
-            )
-        else:
-            return None
+    def __normalize_keywords(text):
+        for aspect_category in ASPECT_CATEGORIES:
+            for keyword in ASPECT_CATEGORIES[aspect_category]:
+                if keyword in text:
+                    text = text.replace(keyword, keyword.replace(" ", "_"))
+        return text
 
     @staticmethod
-    def __get_context(sentence, index):
+    def __process_context(sentence, word, index=None):
+        logging.debug("Starting context processing for <{0}>".format(sentence))
+        results = []
+        index = TextProcessor.get_word_index(sentence, word) if not index else index
+        lcontext = Analizer.__get_left_context(sentence, index)
+        rcontext = Analizer.__get_right_context(sentence, index)
+        for context in (lcontext, rcontext):
+            evaluator, evaluation_rate = Analizer.__get_evaluation(context)
+            if evaluator:
+                logging.debug("Evaluation word found: '{0}'".format(sentence))
+                intensifier, intensifier_rate = Analizer.__get_intensifier(context)
+                inverter_word, success = Analizer.__get_inverter(context)
+                positive, negative = Analizer.__get_keyword_summary(
+                    rate=evaluation_rate,
+                    multiplayer=intensifier_rate,
+                    inverted=success
+                )
+                results.append(ContextReport(
+                    keyword=word.replace('_', ' '),
+                    evaluator=evaluator,
+                    positive=positive,
+                    negative=negative,
+                    inverted=success,
+                    intensifier=intensifier
+                ))
+        return results
+
+    @staticmethod
+    def __get_left_context(sentence, index):
         start = index - 3 if index - 3 > 0 else 0
         return sentence[start:index]
+
+    @staticmethod
+    def __get_right_context(sentence, index):
+        end = index + 5 if index + 5 < len(sentence) else None
+        return sentence[index+1:end]
 
     @staticmethod
     def __get_evaluation(context):
