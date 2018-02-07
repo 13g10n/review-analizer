@@ -1,7 +1,7 @@
 import logging
 
 from data import *
-from model.processors.text import TextProcessor
+from models.processors.text import TextProcessor
 from .reports.context import ContextReport
 from .reports.sentence import SentenceReport
 from .reports.text import TextReport
@@ -34,7 +34,7 @@ class Analizer:
             for keyword in ASPECT_CATEGORIES[aspect_category]:
                 if keyword in sentence:
                     logging.debug("Found keyword '{0}' in '{1}'".format(keyword, sentence))
-                    report = Analizer.__process_context(words, keyword.split()[0])
+                    report = Analizer.__process_context(words, keyword)
                     if report:
                         success = True
                         logging.debug("Report created for '{0}'".format(sentence))
@@ -46,7 +46,7 @@ class Analizer:
     @staticmethod
     def __process_context(sentence, word, index=None):
         logging.debug("Starting context processing for <{0}>".format(sentence))
-        index = TextProcessor.get_word_index(sentence, word) if not index else index
+        index = TextProcessor.get_word_index(sentence, word.split()[0]) if not index else index
         context = Analizer.__get_context(sentence, index)
         evaluator, evaluation_rate = Analizer.__get_evaluation(context)
         if evaluator:

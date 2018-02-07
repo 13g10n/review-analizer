@@ -26,7 +26,9 @@ class TextProcessor:
         delimiters = ('.', '!', '?')
         for index, letter in enumerate(text):
             sentence += letter
-            if letter in delimiters and TextProcessor.__get_next_letter(text, index) not in delimiters:
+            if index == len(text) - 1:
+                result.append(sentence.strip())
+            elif letter in delimiters and TextProcessor.__get_next_letter(text, index) not in delimiters:
                 result.append(sentence.strip())
                 sentence = ""
         return result

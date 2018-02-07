@@ -1,0 +1,6 @@
+{TABLE}
+
+Evaluation:       {POSITIVE} | {NEGATIVE}
+Summary:          {SUMMARY}
+Analized:         {COUNTER} items
+
