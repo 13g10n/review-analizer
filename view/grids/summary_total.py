@@ -33,7 +33,14 @@ class SummaryTotalGrid(BasicGrid):
                 "Negative": SCHEME.danger_color,
                 "Neutral": SCHEME.background
             }[self.report.summary]
-            Label(self, text=self.report.summary, bd=1, relief="solid", bg=bg) \
+
+            fg = {
+                "Positive": SCHEME.button_text,
+                "Negative": SCHEME.button_text,
+                "Neutral": SCHEME.text
+            }[self.report.summary]
+
+            Label(self, text=self.report.summary, bd=1, relief="solid", bg=bg, fg=fg) \
                 .grid(row=2, column=1, sticky=W + E + S + N, ipady=5)
 
     def update(self, report=None):

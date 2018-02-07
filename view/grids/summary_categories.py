@@ -25,13 +25,16 @@ class SummaryCategoriesGrid(BasicGrid):
             for i, (category, value) in enumerate(self.report.evaluation.items()):
                 if value > 0:
                     bg = SCHEME.success_color
+                    fg = SCHEME.button_text
                 elif value < 0:
                     bg = SCHEME.danger_color
+                    fg = SCHEME.button_text
                 else:
                     bg = SCHEME.background
+                    fg = SCHEME.text
                 Label(self, text=category.capitalize(), bd=1, relief="solid")\
                     .grid(row=i+1, column=0, sticky=W + E + S + N, ipady=5)
-                Label(self, text=EvaluationProcessor.get_evaluation(value), bd=1, relief="solid", bg=bg)\
+                Label(self, text=EvaluationProcessor.get_evaluation(value), bd=1, relief="solid", bg=bg, fg=fg)\
                     .grid(row=i+1, column=1, sticky=W + E + S + N, ipady=5)
 
     def update(self, report=None):
