@@ -31,7 +31,7 @@ class Report:
 
     @property
     def summary(self):
-        return EvaluationProcessor.get_evaluation(self.positive + self.negative)
+        return EvaluationProcessor.get_evaluation(self.positive, self.negative)
 
     def add(self, item):
         if item and isinstance(item, self.__acceptable_types):

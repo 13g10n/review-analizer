@@ -1,12 +1,12 @@
 import unittest
 
-from models.analizer import Analizer
+from models.analyzer import Analyzer
 from models.loaders.template_loader import TemplateLoader
 from models.processors.text import TextProcessor
 from models.reports.context import ContextReport
 
 
-class AnalizerTest(unittest.TestCase):
+class AnalyzerTest(unittest.TestCase):
 
     def setUp(self):
         self.input_text = "They underestimated the time some technical aspects took, but this didn't " \
@@ -51,32 +51,32 @@ class AnalizerTest(unittest.TestCase):
         ]
 
     def test_get_context(self):
-        result = Analizer._Analizer__get_context(self.words, self.sentence_context_index)
+        result = Analyzer._Analyzer__get_context(self.words, self.sentence_context_index)
         self.assertListEqual(result, self.sentence_context)
 
     def test_get_evaluation(self):
-        result = Analizer._Analizer__get_evaluation(self.sentence_context)
+        result = Analyzer._Analyzer__get_evaluation(self.sentence_context)
         self.assertEqual(result, self.evaluation)
 
     def test_get_intensifier(self):
-        result = Analizer._Analizer__get_intensifier(self.sentence_context)
+        result = Analyzer._Analyzer__get_intensifier(self.sentence_context)
         self.assertEqual(result, self.evaluation)
 
     def test_get_inverter(self):
-        result = Analizer._Analizer__get_inverter(self.sentence_context)
+        result = Analyzer._Analyzer__get_inverter(self.sentence_context)
         self.assertEqual(result, self.inverter)
 
     def test_get_keyword_summary(self):
         for test_data in self.keyword_summary_test_data:
-            result = Analizer._Analizer__get_keyword_summary(*self.keyword_summary_test_data[test_data])
+            result = Analyzer._Analyzer__get_keyword_summary(*self.keyword_summary_test_data[test_data])
             self.assertEqual(test_data, result)
 
     def test_process_context(self):
-        result = Analizer._Analizer__process_context(self.words, self.words[self.sentence_context_index])
+        result = Analyzer._Analyzer__process_context(self.words, self.words[self.sentence_context_index])
         self.assertEqual(result, self.context_result)
 
     def test_process_sentence(self):
-        result = Analizer.process_sentence(self.sentence).reports
+        result = Analyzer.process_sentence(self.sentence).reports
         self.assertEqual(len(result), len(self.sentence_result))
         for expected, real in zip(result, self.sentence_result):
             self.assertEqual(expected.content, real.content)

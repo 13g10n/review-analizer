@@ -25,7 +25,7 @@ class SummaryFrame(Frame):
         self.title = Label(self, text='SUMMARY'.upper(),
                            background=SCHEME.background,
                            fg=SCHEME.text, font=SCHEME.title_font)
-        self.description = Label(self, text='You can view or export the result of text processing',
+        self.description = Label(self, text='View or export the results of all reviews',
                                  background=SCHEME.background,
                                  fg=SCHEME.text, font=SCHEME.description_font)
         self.categories_table = SummaryCategoriesGrid(self, self.__controller.get_summary_report())

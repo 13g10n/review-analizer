@@ -1,4 +1,4 @@
-ANALIZE REPORT for "{TITLE}"
+ANALYZE REPORT for "{TITLE}"
 
     {TEXT}
 
@@ -6,6 +6,6 @@ ANALIZE REPORT for "{TITLE}"
     Evaluation:       {POSITIVE} | {NEGATIVE}
     Summary:          {SUMMARY}
 
-SENTENCES DETAILS:
+SENTENCE DETAILS:
 
 {SENTENCE_REPORTS}

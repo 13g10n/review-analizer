@@ -23,7 +23,7 @@ class OutputFrame(Frame):
         self.title = Label(self, text='OUTPUT STEP'.upper(),
                                  background=SCHEME.background,
                                  fg=SCHEME.text, font=SCHEME.title_font)
-        self.description = Label(self, text='You can view or export the result of text processing',
+        self.description = Label(self, text='Result of the review analyzing',
                                        background=SCHEME.background,
                                        fg=SCHEME.text, font=SCHEME.description_font)
         self.output = Text(self, wrap=WORD)

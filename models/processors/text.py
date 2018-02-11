@@ -1,6 +1,6 @@
 import logging
 
-logging.basicConfig(filename='analizer.log',level=logging.DEBUG, filemode='w')
+logging.basicConfig(filename='analyzer.log',level=logging.DEBUG, filemode='w')
 
 
 class TextProcessor:

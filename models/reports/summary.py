@@ -14,13 +14,16 @@ class SummaryReport(Report):
         self.evaluation = {}
 
         for key in ASPECT_CATEGORIES.keys():
-            self.evaluation[key] = 0
+            self.evaluation[key] = {
+                'positive': 0,
+                'negative': 0
+            }
 
     def add(self, item):
         super().add(item)
         for sentence_report in item.reports:
             for context_report in sentence_report.reports:
                 category = context_report.category
-                total = context_report.positive + context_report.negative
                 if category in self.evaluation:
-                    self.evaluation[category] += total
+                    self.evaluation[category]['positive'] += context_report.positive
+                    self.evaluation[category]['negative'] += context_report.negative

@@ -10,7 +10,7 @@ class MainWindow(Tk):
         super().__init__()
         self.__controller = controller
         self.__scheme = ColorSchemeLoader.load(settings.DEFAULT_COLOR_SCHEME)
-        self.__title = "Review analizer"
+        self.__title = "Review analyzer"
         self.__setup_window()
         self.__setup_container()
         self.__setup_frames()

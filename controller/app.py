@@ -1,5 +1,5 @@
 from view.window import MainWindow
-from models.analizer import Analizer
+from models.analyzer import Analyzer
 from models.processors.template import TemplateProcessor
 from models.reports.summary import SummaryReport
 
@@ -58,13 +58,9 @@ class Application:
         self.window.set_frame(self.__steps[1])
 
     def process_text(self):
-        self.__report = Analizer.process_text(self.__input_text)
+        self.__report = Analyzer.process_text(self.__input_text)
         self.__summary.add(self.__report)
         self.__output_text = TemplateProcessor.get_text_report_string(self.__report)
 
     def get_summary_report(self):
         return self.__summary
-
-    @property
-    def summary(self):
-        return TemplateProcessor.get_summary_report_string(self.__summary)

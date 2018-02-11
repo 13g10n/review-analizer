@@ -22,19 +22,14 @@ class SummaryCategoriesGrid(BasicGrid):
             Label(self, text="Report categories", bd=1, relief="solid")\
                 .grid(row=0, column=0, columnspan=2, sticky=W + E + S + N, ipady=5)
 
-            for i, (category, value) in enumerate(self.report.evaluation.items()):
-                if value > 0:
-                    bg = SCHEME.success_color
-                    fg = SCHEME.button_text
-                elif value < 0:
-                    bg = SCHEME.danger_color
-                    fg = SCHEME.button_text
-                else:
-                    bg = SCHEME.background
-                    fg = SCHEME.text
+            for i, (category, values) in enumerate(self.report.evaluation.items()):
+                evaluation = EvaluationProcessor.get_evaluation(
+                    values['positive'], values['negative'])
+                fg, bg = EvaluationProcessor.get_evaluation_colors(evaluation)
+
                 Label(self, text=category.capitalize(), bd=1, relief="solid")\
                     .grid(row=i+1, column=0, sticky=W + E + S + N, ipady=5)
-                Label(self, text=EvaluationProcessor.get_evaluation(value), bd=1, relief="solid", bg=bg, fg=fg)\
+                Label(self, text=evaluation, bd=1, relief="solid", bg=bg, fg=fg)\
                     .grid(row=i+1, column=1, sticky=W + E + S + N, ipady=5)
 
     def update(self, report=None):

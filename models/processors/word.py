@@ -1,6 +1,6 @@
-import settings
-
 from docx import Document
+
+from models.processors.evaluation import EvaluationProcessor
 
 
 class WordProcessor:
@@ -8,6 +8,10 @@ class WordProcessor:
     @staticmethod
     def generate(summary):
         document = Document()
+
+        document.add_heading('Summary', 1)
+        WordProcessor.__add_summary_category_table(document, summary)
+        WordProcessor.__add_summary_total_table(document, summary)
 
         for report in summary.reports:
             document.add_heading('Text report for "{}"'.format(report.excerpt), 1)
@@ -33,6 +37,34 @@ class WordProcessor:
                 first_row.cells[0].merge(last_row.cells[0])
 
         return document
+
+    @staticmethod
+    def __add_summary_category_table(document, summary):
+        document.add_heading('Report categories', 2)
+        table = document.add_table(rows=0, cols=2)
+        table.style = 'Table Grid'
+
+        for i, (category, values) in enumerate(summary.evaluation.items()):
+            evaluation = EvaluationProcessor.get_evaluation(
+                values['positive'], values['negative'])
+
+            row = table.add_row()
+            row.cells[0].paragraphs[0].add_run(category.capitalize())
+            row.cells[1].paragraphs[0].add_run(evaluation)
+
+    @staticmethod
+    def __add_summary_total_table(document, summary):
+        document.add_heading('Reviews summary', 2)
+        table = document.add_table(rows=0, cols=2)
+        table.style = 'Table Grid'
+
+        row = table.add_row()
+        row.cells[0].paragraphs[0].add_run("Analyzed items")
+        row.cells[1].paragraphs[0].add_run(str(len(summary.reports)))
+
+        row = table.add_row()
+        row.cells[0].paragraphs[0].add_run("Agency reputation")
+        row.cells[1].paragraphs[0].add_run(summary.summary)
 
     @staticmethod
     def __add_summary_table_rows(table, report):

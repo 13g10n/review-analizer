@@ -14,3 +14,4 @@ class ColorScheme:
 
     success_color = "#2ecc71"
     danger_color = "#e74c3c"
+    warning_color = "#f39c12"
